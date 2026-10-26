@@ -1,63 +1,102 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Link } from "expo-router";
+import { useState } from "react";
 import {
-    Alert,
     Image,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     StyleSheet,
     Text,
-    View
+    View,
+    useColorScheme,
 } from "react-native";
 export default function Index() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === "dark"
+
+    const colors = {
+        background: isDark ? "#121212" : "#FDFDFD",
+        textPrimary: isDark ? "#FFFFFF" : "#000000",
+        textSecondary: isDark ? "#A0A0A0" : "#666666",
+        link: isDark ? "#4D6BFF" : "#0A1172",
+    };
+
     function handleSignIn() {
-        Alert.alert("Entrar", "Função acionada");
+        if (!email.trim() || !password.strim()) {
+            return Alert.alert("Entrar", "Preencha e-mail e senha para enttrar");
+        }
+
     }
     return (
         <KeyboardAvoidingView
-            style={{ style: 1 }}
+            style={{ flex: 1, backgroundColor: colors.background }}
             behavior={Platform.select({ ios: "padding", android: "height" })}
         >
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
-                keyboardShouldPersistTaps="handled"
+                keyboardShouldPersistTaps="handled" import {Button} from "@/components/button";
+
             >
-                <View
-                    style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-                >
-                    <Image
-                        source={require("/home/alunos/my-app/src/assets/castaldi.png")}
-                        style={styles.illustration}
+            <View style={styles.container}>
+                <Image
+                    source={require("../assets/castaldi.png")}
+                    style={styles.illustration}
+                    resizeMode="contain"
+                />
+
+                <Text style={[styles.title, { color: colors.textPrimary }]}>
+                    Programação Mobile.
+                </Text>
+
+                <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+                    Acesse sua conta
+                </Text>
+
+                <View style={styles.form}>
+                    <Input
+                        placeholder="E-mail"
+                        keyboardType="email-address"
+                        onChangeText={setEmail}
                     />
-                    <Text style={styles.title}>Programação Mobile.</Text>
-                    <Text style={styles.subtitle}>Acesse sua conta</Text>
-                    <View style={styles.form}>
-                        <Input placeholder="E-mail" keyboardType="email-address" />
-                        <Input placeholder="Senha" secureTextEntry />
-                        <Button label="Entrar" onPress={handleSignIn} />
-                    </View>
-                    <Text style={styles.footerText}>
-                        Não tem uma conta ?{" "}
-                        <Link href="/signup" style={styles.footerLink}>
-                            Cadastre-se aqui.
-                        </Link>
-                    </Text>
+
+                    <Input
+                        placeholder="Senha"
+                        secureTextEntry
+                        onChangeText={setPassword}
+                    />
+                    <Button label="Entrar" onPress={handleSignIn} />
                 </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                <Text style={[styles.footerText, { color: colors.textSecondary }]}>
+                    Não tem uma conta?{" "}
+                    <Link
+                        href="/signup"
+                        style={[styles.footerLink, { color: colors.link }]}
+                    >
+                        Cadastre-se aqui.
+                    </Link>
+                </Text>
+            </View>
+        </ScrollView>
+        </KeyboardAvoidingView >
     );
-};
+}
+
+
 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FDFDFD",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
         padding: 32,
     },
     title: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: "bold",
     },
     subtitle: {
@@ -66,20 +105,20 @@ const styles = StyleSheet.create({
     form: {
         marginTop: 30,
         gap: 24,
+        width: "80%",
     },
 
     illustration: {
         width: "25%",
         height: 300,
+        marginBottom: 20,
     },
 
     footerText: {
         textAlign: "center",
         marginTop: 24,
-        color: "#000000",
     },
     footerLink: {
-        color: "#0A1172",
         fontWeight: 700,
     },
 });

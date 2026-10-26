@@ -8,13 +8,23 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
-    StyleSheet
+    StyleSheet,
+    useColorScheme
 } from "react-native";
 
 export default function Signup() {
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === "dark"
+
+    const colors = {
+        background: isDark ? "#121212" : "#FDFDFD",
+        textPrimary: isDark ? "#FFFFFF" : "#000000",
+        textSecondary: isDark ? "#A0A0A0" : "#666666",
+        link: isDark ? "#4D6BFF" : "#0A1172",
+    };
     return (
         <KeyboardAvoidingView
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: colors.background }}
             behavior={Platform.select({ ios: "padding", android: "height" })}
         >
             <ScrollView
@@ -26,11 +36,16 @@ export default function Signup() {
                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image
-                        source={require("/home/alunos/my-app/src/assets/castaldi.png")}
+                        source={require("../assets/castaldi.png")}
                         style={styles.illustration}
                     />
-                    <Text style={styles.title}>Cadastrar</Text>
-                    <Text style={styles.subtitle}>Crie sua conta.</Text>
+                    <Text style={[styles.title, { color: colors.textPrimary }]}>
+                        Programação Mobile.
+                    </Text>
+                    <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+                        Acesse sua conta
+                    </Text>
+
                     <View style={styles.form}>
                         <Input placeholder="Nome" />
                         <Input placeholder="E-mail" keyboardType="email-address" />
@@ -56,7 +71,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FDFDFD",
         padding: 32,
     },
     title: {
@@ -78,10 +92,10 @@ const styles = StyleSheet.create({
     footerText: {
         textAlign: "center",
         marginTop: 24,
-        color: "#000000",
+
     },
     footerLink: {
-        color: "#0A1172",
+
         fontWeight: 700,
     },
 });
